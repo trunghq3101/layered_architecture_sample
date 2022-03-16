@@ -3,9 +3,14 @@ import 'package:architecture_bloc_sample/data/models/todo.model.dart';
 import 'package:architecture_bloc_sample/data/todo_storage.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,9 +53,7 @@ class HomePage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(24),
                   child: FloatingActionButton(
-                    onPressed: () {
-                      todoBloc.addTodo();
-                    },
+                    onPressed: _onAddTodoButtonPressed,
                     child: const Icon(Icons.add),
                   ),
                 ),
@@ -60,5 +63,10 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _onAddTodoButtonPressed() async {
+    await todoBloc.addTodo();
+    setState(() {});
   }
 }
