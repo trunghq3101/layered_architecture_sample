@@ -26,8 +26,7 @@ class _SuperSandboxHomePageState extends State<SuperSandboxHomePage> {
         title: const Text('Super Sandbox'),
         leading: BackButton(
           onPressed: () {
-            _userModeBloc.exitUserMode();
-            Navigator.of(context).maybePop();
+            _onBackPressed();
           },
         ),
       ),
@@ -84,5 +83,11 @@ class _SuperSandboxHomePageState extends State<SuperSandboxHomePage> {
 
   Color _todoColor(SuperSandboxTodo todo) {
     return todo.matched ? Colors.red : Colors.green;
+  }
+
+  Future<void> _onBackPressed() async {
+    await _todoBloc.onExit();
+    _userModeBloc.exitUserMode();
+    Navigator.of(context).maybePop();
   }
 }

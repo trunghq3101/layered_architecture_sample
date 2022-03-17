@@ -29,4 +29,11 @@ class SuperSandboxTodoBloc {
         )
         .toList();
   }
+
+  Future<void> onExit() async {
+    final superSandboxTodoList = await _superSandboxTodoStorage.readTodoList();
+    final normalSandboxTodoList = await _normalTodoStorage.readTodoList();
+    normalSandboxTodoList.removeWhere((e) => superSandboxTodoList.contains(e));
+    await _normalTodoStorage.saveTodoList(normalSandboxTodoList);
+  }
 }
