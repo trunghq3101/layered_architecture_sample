@@ -43,19 +43,21 @@ class _SandboxHomePageState extends State<SandboxHomePage> {
           )
         ],
       ),
-      body: Stack(
-        children: [
-          TodoListView(todoStorage: _todoStorage),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: AddTodoButton(
-              addTodo: _todoBloc.addTodo,
-              onAddedSuccess: () {
-                setState(() {});
-              },
+      body: SafeArea(
+        child: Stack(
+          children: [
+            TodoListView(todoStorage: _todoStorage),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: AddTodoButton(
+                addTodo: _todoBloc.addTodo,
+                onAddedSuccess: () {
+                  setState(() {});
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

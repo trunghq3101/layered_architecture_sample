@@ -1,16 +1,20 @@
 import 'package:architecture_bloc_sample/business/models/super_sandbox_todo.model.dart';
 import 'package:architecture_bloc_sample/business/todo_creator.dart';
+import 'package:architecture_bloc_sample/data/todo_list_version_storage.dart';
 import 'package:architecture_bloc_sample/data/todo_storage.dart';
 
 class SuperSandboxTodoBloc {
   SuperSandboxTodoBloc({
     required TodoStorage superSandboxTodoStorage,
     required TodoStorage normalTodoStorage,
+    required TodoListVersionStorage todoListVersionStorage,
   })  : _superSandboxTodoStorage = superSandboxTodoStorage,
-        _normalTodoStorage = normalTodoStorage;
+        _normalTodoStorage = normalTodoStorage,
+        _todoListVersionStorage = todoListVersionStorage;
 
   final TodoStorage _superSandboxTodoStorage;
   final TodoStorage _normalTodoStorage;
+  final TodoListVersionStorage _todoListVersionStorage;
 
   Future<void> addTodo() async {
     final todo = todoCreator2();
@@ -34,7 +38,10 @@ class SuperSandboxTodoBloc {
     await onlyRemoveRed();
   }
 
-  Future<void> saveACopy() async {}
+  Future<void> saveACopy() async {
+    final superSandboxTodoList = await _superSandboxTodoStorage.readTodoList();
+    await _todoListVersionStorage.saveVersion(superSandboxTodoList);
+  }
 
   Future<void> onlyRemoveRed() async {
     final superSandboxTodoList = await _superSandboxTodoStorage.readTodoList();

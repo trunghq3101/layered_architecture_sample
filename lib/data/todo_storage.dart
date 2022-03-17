@@ -73,7 +73,8 @@ class CachedTodoStorage extends TodoStorage {
   }
 
   @override
-  Future<void> saveTodoList(List<Todo> todoList) {
-    throw UnimplementedError();
+  Future<void> saveTodoList(List<Todo> todoList) async {
+    _todoList.clear();
+    _todoList.addAll(todoList);
   }
 }
