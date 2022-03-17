@@ -1,6 +1,7 @@
 import 'package:architecture_bloc_sample/business/models/super_sandbox_todo.model.dart';
 import 'package:architecture_bloc_sample/business/super_sandbox_todo_bloc.dart';
 import 'package:architecture_bloc_sample/business/user_mode_bloc.dart';
+import 'package:architecture_bloc_sample/presentation/super_sandbox_saver_page.dart';
 import 'package:architecture_bloc_sample/service_locator.dart';
 import 'package:flutter/material.dart';
 
@@ -29,6 +30,14 @@ class _SuperSandboxHomePageState extends State<SuperSandboxHomePage> {
             _onBackPressed();
           },
         ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed('$SuperSandboxSaverPage');
+            },
+            icon: const Icon(Icons.arrow_forward),
+          ),
+        ],
       ),
       body: Stack(
         children: [

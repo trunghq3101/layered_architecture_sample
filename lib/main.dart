@@ -4,6 +4,7 @@ import 'package:architecture_bloc_sample/service_locator.dart';
 import 'package:flutter/material.dart';
 
 import 'presentation/super_sandbox_home_page.dart';
+import 'presentation/super_sandbox_saver_page.dart';
 
 void main() {
   setupMainDeps();
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         '$HomePage': (_) => const HomePage(),
         '$SandboxHomePage': (_) => const SandboxHomePage(),
         '$SuperSandboxHomePage': (_) => const SuperSandboxHomePage(),
+        '$SuperSandboxSaverPage': (_) => const SuperSandboxSaverPage(),
       },
     );
   }

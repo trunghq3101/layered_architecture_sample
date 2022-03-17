@@ -31,9 +31,24 @@ class SuperSandboxTodoBloc {
   }
 
   Future<void> onExit() async {
+    await onlyRemoveRed();
+  }
+
+  Future<void> saveACopy() async {}
+
+  Future<void> onlyRemoveRed() async {
     final superSandboxTodoList = await _superSandboxTodoStorage.readTodoList();
     final normalSandboxTodoList = await _normalTodoStorage.readTodoList();
     normalSandboxTodoList.removeWhere((e) => superSandboxTodoList.contains(e));
+    await _normalTodoStorage.saveTodoList(normalSandboxTodoList);
+  }
+
+  Future<void> removeRedAndKeepGreen() async {
+    final superSandboxTodoList = await _superSandboxTodoStorage.readTodoList();
+    final normalSandboxTodoList = await _normalTodoStorage.readTodoList();
+    normalSandboxTodoList.removeWhere((e) => superSandboxTodoList.contains(e));
+    superSandboxTodoList.removeWhere((e) => normalSandboxTodoList.contains(e));
+    normalSandboxTodoList.addAll(superSandboxTodoList);
     await _normalTodoStorage.saveTodoList(normalSandboxTodoList);
   }
 }
