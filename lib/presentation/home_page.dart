@@ -25,7 +25,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final TodoStorage _todoStorage = getIt.get(instanceName: kFileSystem);
   final UserModeStorage _userModeStorage = getIt.get();
-  final TodoBloc _todoBloc = getIt.get(instanceName: kFileSystem);
+  final TodoBloc _todoBloc = getIt.get();
   final UserModeBloc _userModeBloc = getIt.get();
 
   @override

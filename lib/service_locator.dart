@@ -1,3 +1,4 @@
+import 'package:architecture_bloc_sample/business/sandbox_todo_bloc.dart';
 import 'package:architecture_bloc_sample/business/todo_bloc.dart';
 import 'package:architecture_bloc_sample/business/user_mode_bloc.dart';
 import 'package:architecture_bloc_sample/data/todo_storage.dart';
@@ -17,7 +18,6 @@ void setupMainDeps() {
   getIt.registerSingleton<UserModeStorage>(CachedUserModeStorage());
   getIt.registerFactory<TodoBloc>(
     () => TodoBloc(todoStorage: getIt.get(instanceName: kFileSystem)),
-    instanceName: kFileSystem,
   );
   getIt.registerFactory<UserModeBloc>(
     () => UserModeBloc(userModeStorage: getIt.get()),
@@ -29,8 +29,10 @@ void setupSandboxDeps() {
     CachedTodoStorage(),
     instanceName: kCached,
   );
-  getIt.registerFactory<TodoBloc>(
-    () => TodoBloc(todoStorage: getIt.get(instanceName: kCached)),
-    instanceName: kCached,
+  getIt.registerFactory(
+    () => SandboxTodoBloc(
+      cachedTodoStorage: getIt.get(instanceName: kCached),
+      persistenceTodoStorage: getIt.get(instanceName: kFileSystem),
+    ),
   );
 }
