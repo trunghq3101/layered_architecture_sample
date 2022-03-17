@@ -3,7 +3,15 @@ import 'package:architecture_bloc_sample/business/user_mode_bloc.dart';
 import 'package:architecture_bloc_sample/data/models/todo.model.dart';
 import 'package:architecture_bloc_sample/data/todo_storage.dart';
 import 'package:architecture_bloc_sample/data/user_mode_storage.dart';
+import 'package:architecture_bloc_sample/presentation/sandbox_home_page.dart';
+import 'package:architecture_bloc_sample/presentation/super_sandbox_home_page.dart';
 import 'package:flutter/material.dart';
+
+final kMapUserModeToPage = {
+  UserMode.normal: '$HomePage',
+  UserMode.sandbox: '$SandboxHomePage',
+  UserMode.superSandbox: '$SuperSandboxHomePage',
+};
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -102,8 +110,12 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
-  void _onUserModeDropdownChanged(UserMode? userMode) async {
+  Future<void> _onUserModeDropdownChanged(UserMode? userMode) async {
     userModeBloc.changeUserMode(userMode);
+    setState(() {});
+    if (userMode == null || userMode == UserMode.normal) return;
+    await Navigator.of(context).pushNamed(kMapUserModeToPage[userMode]!);
+    userModeBloc.changeUserMode(UserMode.normal);
     setState(() {});
   }
 }

@@ -1,5 +1,8 @@
 import 'package:architecture_bloc_sample/presentation/home_page.dart';
+import 'package:architecture_bloc_sample/presentation/sandbox_home_page.dart';
 import 'package:flutter/material.dart';
+
+import 'presentation/super_sandbox_home_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +19,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      initialRoute: '$HomePage',
+      routes: {
+        '$HomePage': (_) => const HomePage(),
+        '$SandboxHomePage': (_) => const SandboxHomePage(),
+        '$SuperSandboxHomePage': (_) => const SuperSandboxHomePage(),
+      },
     );
   }
 }
