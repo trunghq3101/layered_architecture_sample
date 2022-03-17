@@ -4,6 +4,7 @@ import 'package:architecture_bloc_sample/data/todo_storage.dart';
 import 'package:architecture_bloc_sample/data/user_mode_storage.dart';
 import 'package:architecture_bloc_sample/presentation/sandbox_home_page.dart';
 import 'package:architecture_bloc_sample/presentation/super_sandbox_home_page.dart';
+import 'package:architecture_bloc_sample/presentation/widgets/add_todo_button.dart';
 import 'package:architecture_bloc_sample/presentation/widgets/todo_list_view.dart';
 import 'package:architecture_bloc_sample/service_locator.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +23,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final TodoStorage _todoStorage = getIt.get(instanceName: 'fileSystem');
+  final TodoStorage _todoStorage = getIt.get(instanceName: kFileSystem);
   final UserModeStorage _userModeStorage = getIt.get();
-  final TodoBloc _todoBloc = getIt.get();
+  final TodoBloc _todoBloc = getIt.get(instanceName: kFileSystem);
   final UserModeBloc _userModeBloc = getIt.get();
 
   @override
@@ -69,12 +70,11 @@ class _HomePageState extends State<HomePage> {
               ),
               Align(
                 alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: FloatingActionButton(
-                    onPressed: _onAddTodoButtonPressed,
-                    child: const Icon(Icons.add),
-                  ),
+                child: AddTodoButton(
+                  addTodo: _todoBloc.addTodo,
+                  onAddedSuccess: () {
+                    setState(() {});
+                  },
                 ),
               ),
             ],
@@ -82,11 +82,6 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  Future<void> _onAddTodoButtonPressed() async {
-    await _todoBloc.addTodo();
-    setState(() {});
   }
 
   Future<void> _onUserModeDropdownChanged(UserMode? userMode) async {

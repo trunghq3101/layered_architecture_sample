@@ -6,14 +6,18 @@ import 'package:get_it/get_it.dart';
 
 final getIt = GetIt.instance;
 
+const kFileSystem = 'fileSystem';
+const kCached = 'cached';
+
 void setupMainDeps() {
   getIt.registerSingleton<TodoStorage>(
     FileSystemTodoStorage(),
-    instanceName: 'fileSystem',
+    instanceName: kFileSystem,
   );
   getIt.registerSingleton<UserModeStorage>(CachedUserModeStorage());
   getIt.registerFactory<TodoBloc>(
-    () => TodoBloc(todoStorage: getIt.get(instanceName: 'fileSystem')),
+    () => TodoBloc(todoStorage: getIt.get(instanceName: kFileSystem)),
+    instanceName: kFileSystem,
   );
   getIt.registerFactory<UserModeBloc>(
     () => UserModeBloc(userModeStorage: getIt.get()),
@@ -23,6 +27,10 @@ void setupMainDeps() {
 void setupSandboxDeps() {
   getIt.registerSingleton<TodoStorage>(
     CachedTodoStorage(),
-    instanceName: 'cached',
+    instanceName: kCached,
+  );
+  getIt.registerFactory<TodoBloc>(
+    () => TodoBloc(todoStorage: getIt.get(instanceName: kCached)),
+    instanceName: kCached,
   );
 }
