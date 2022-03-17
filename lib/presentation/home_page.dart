@@ -90,11 +90,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _onUserModeDropdownChanged(UserMode? userMode) async {
-    _userModeBloc.changeUserMode(userMode);
+    final started = _userModeBloc.startUserMode(userMode);
+    if (!started) return;
     setState(() {});
-    if (userMode == null || userMode == UserMode.normal) return;
     await Navigator.of(context).pushNamed(kMapUserModeToPage[userMode]!);
-    _userModeBloc.changeUserMode(UserMode.normal);
     setState(() {});
   }
 }
