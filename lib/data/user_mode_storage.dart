@@ -1,7 +1,5 @@
 enum UserMode { normal, sandbox, superSandbox }
 
-final userModeStorage = CachedUserModeStorage();
-
 abstract class UserModeStorage {
   UserMode? get currentUserMode;
   set currentUserMode(UserMode? currentUserMode);

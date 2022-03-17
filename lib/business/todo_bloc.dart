@@ -16,8 +16,6 @@ const kTodoTitleList = [
   'Always forgive your enemies; nothing annoys them so much.'
 ];
 
-final TodoBloc todoBloc = TodoBloc(todoStorage: todoStorage);
-
 class TodoBloc {
   final TodoStorage _todoStorage;
 

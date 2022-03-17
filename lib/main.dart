@@ -1,10 +1,12 @@
 import 'package:architecture_bloc_sample/presentation/home_page.dart';
 import 'package:architecture_bloc_sample/presentation/sandbox_home_page.dart';
+import 'package:architecture_bloc_sample/service_locator.dart';
 import 'package:flutter/material.dart';
 
 import 'presentation/super_sandbox_home_page.dart';
 
 void main() {
+  setupMainDeps();
   runApp(const MyApp());
 }
 

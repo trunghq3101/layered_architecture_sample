@@ -1,10 +1,11 @@
 import 'package:architecture_bloc_sample/business/todo_bloc.dart';
 import 'package:architecture_bloc_sample/business/user_mode_bloc.dart';
-import 'package:architecture_bloc_sample/data/models/todo.model.dart';
 import 'package:architecture_bloc_sample/data/todo_storage.dart';
 import 'package:architecture_bloc_sample/data/user_mode_storage.dart';
 import 'package:architecture_bloc_sample/presentation/sandbox_home_page.dart';
 import 'package:architecture_bloc_sample/presentation/super_sandbox_home_page.dart';
+import 'package:architecture_bloc_sample/presentation/widgets/todo_list_view.dart';
+import 'package:architecture_bloc_sample/service_locator.dart';
 import 'package:flutter/material.dart';
 
 final kMapUserModeToPage = {
@@ -21,6 +22,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final TodoStorage _todoStorage = getIt.get(instanceName: 'fileSystem');
+  final UserModeStorage _userModeStorage = getIt.get();
+  final TodoBloc _todoBloc = getIt.get();
+  final UserModeBloc _userModeBloc = getIt.get();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,40 +57,13 @@ class _HomePageState extends State<HomePage> {
                             value: UserMode.superSandbox,
                           ),
                         ],
-                        value: userModeStorage.currentUserMode,
+                        value: _userModeStorage.currentUserMode,
                         onChanged: _onUserModeDropdownChanged,
                       ),
                     ),
                   ),
                   Expanded(
-                    child: FutureBuilder<List<Todo>>(
-                      future: todoStorage.readTodoList(),
-                      builder: (_, snapshot) {
-                        if (snapshot.hasData) {
-                          final todoList = snapshot.data!;
-                          return ListView(
-                            children: todoList
-                                .map(
-                                  (e) => Card(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(24),
-                                      child: Text(e.title),
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-                          );
-                        } else if (snapshot.hasError) {
-                          return const Center(
-                            child: Text("Something went wrong"),
-                          );
-                        } else {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }
-                      },
-                    ),
+                    child: TodoListView(todoStorage: _todoStorage),
                   ),
                 ],
               ),
@@ -106,16 +85,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _onAddTodoButtonPressed() async {
-    await todoBloc.addTodo();
+    await _todoBloc.addTodo();
     setState(() {});
   }
 
   Future<void> _onUserModeDropdownChanged(UserMode? userMode) async {
-    userModeBloc.changeUserMode(userMode);
+    _userModeBloc.changeUserMode(userMode);
     setState(() {});
     if (userMode == null || userMode == UserMode.normal) return;
     await Navigator.of(context).pushNamed(kMapUserModeToPage[userMode]!);
-    userModeBloc.changeUserMode(UserMode.normal);
+    _userModeBloc.changeUserMode(UserMode.normal);
     setState(() {});
   }
 }

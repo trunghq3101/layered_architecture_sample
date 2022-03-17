@@ -5,8 +5,6 @@ import 'package:path_provider/path_provider.dart';
 
 import 'models/todo.model.dart';
 
-final TodoStorage todoStorage = FileSystemTodoStorage();
-
 abstract class TodoStorage {
   Future<List<Todo>> readTodoList();
   Future<void> insertTodo(Todo todo);
@@ -46,5 +44,19 @@ class FileSystemTodoStorage extends TodoStorage {
     final directory = await getApplicationDocumentsDirectory();
     final path = directory.path;
     return File('$path/todoList.json');
+  }
+}
+
+class CachedTodoStorage extends TodoStorage {
+  final List<Todo> _todoList = [];
+
+  @override
+  Future<void> insertTodo(Todo todo) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Todo>> readTodoList() async {
+    return _todoList;
   }
 }
