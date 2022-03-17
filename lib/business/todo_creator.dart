@@ -21,11 +21,11 @@ const kTodoTitleList2 = [
   'Hai Phong',
   'Ha Noi',
   'TP Ho Chi Minh',
-  'Binh Duong',
-  'Da Nang',
-  'Can Tho',
-  'Hue',
-  'Nghe An',
+  'Be the change that you wish to see in the world.',
+  '''In three words I can sum up everything I've learned about life: it goes on.''',
+  'A friend is someone who knows all about you and still loves you.',
+  'To live is the rarest thing in the world. Most people exist, that is all.',
+  'Always forgive your enemies; nothing annoys them so much.'
 ];
 
 Todo todoCreator() {

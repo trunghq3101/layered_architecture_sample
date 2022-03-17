@@ -21,4 +21,15 @@ class Todo {
       title: title,
     );
   }
+
+  @override
+  bool operator ==(other) {
+    if (other is! Todo) {
+      return false;
+    }
+    return title == (other).title;
+  }
+
+  @override
+  int get hashCode => title.hashCode;
 }

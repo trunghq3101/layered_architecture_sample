@@ -1,3 +1,4 @@
+import 'package:architecture_bloc_sample/business/models/super_sandbox_todo.model.dart';
 import 'package:architecture_bloc_sample/business/todo_creator.dart';
 import 'package:architecture_bloc_sample/data/todo_storage.dart';
 
@@ -14,5 +15,18 @@ class SuperSandboxTodoBloc {
   Future<void> addTodo() async {
     final todo = todoCreator2();
     await _superSandboxTodoStorage.insertTodo(todo);
+  }
+
+  Future<List<SuperSandboxTodo>> readTodoList() async {
+    final superSandboxTodoList = await _superSandboxTodoStorage.readTodoList();
+    final normalSandboxTodoList = await _normalTodoStorage.readTodoList();
+    return superSandboxTodoList
+        .map(
+          (e) => SuperSandboxTodo(
+            title: e.title,
+            matched: normalSandboxTodoList.contains(e),
+          ),
+        )
+        .toList();
   }
 }

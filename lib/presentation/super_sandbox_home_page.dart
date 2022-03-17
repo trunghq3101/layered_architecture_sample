@@ -1,11 +1,10 @@
+import 'package:architecture_bloc_sample/business/models/super_sandbox_todo.model.dart';
 import 'package:architecture_bloc_sample/business/super_sandbox_todo_bloc.dart';
 import 'package:architecture_bloc_sample/business/user_mode_bloc.dart';
-import 'package:architecture_bloc_sample/data/todo_storage.dart';
 import 'package:architecture_bloc_sample/service_locator.dart';
 import 'package:flutter/material.dart';
 
 import 'widgets/add_todo_button.dart';
-import 'widgets/todo_list_view.dart';
 
 class SuperSandboxHomePage extends StatefulWidget {
   const SuperSandboxHomePage({Key? key}) : super(key: key);
@@ -15,14 +14,13 @@ class SuperSandboxHomePage extends StatefulWidget {
 }
 
 class _SuperSandboxHomePageState extends State<SuperSandboxHomePage> {
-  final TodoStorage _todoStorage = getIt.get(instanceName: kCached);
   final UserModeBloc _userModeBloc = getIt.get();
   final SuperSandboxTodoBloc _todoBloc = getIt.get();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.indigo[100],
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Super Sandbox'),
@@ -35,7 +33,41 @@ class _SuperSandboxHomePageState extends State<SuperSandboxHomePage> {
       ),
       body: Stack(
         children: [
-          TodoListView(todoStorage: _todoStorage),
+          FutureBuilder<List<SuperSandboxTodo>>(
+            future: _todoBloc.readTodoList(),
+            builder: (_, snapshot) {
+              if (snapshot.hasData) {
+                final todoList = snapshot.data!;
+                return ListView(
+                  children: todoList
+                      .map(
+                        (e) => Card(
+                          shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                              color: _todoColor(e),
+                              width: 4,
+                            ),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(24),
+                            child: Text(e.title),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                );
+              } else if (snapshot.hasError) {
+                return const Center(
+                  child: Text("Something went wrong"),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
           Align(
             alignment: Alignment.bottomRight,
             child: AddTodoButton(
@@ -48,5 +80,9 @@ class _SuperSandboxHomePageState extends State<SuperSandboxHomePage> {
         ],
       ),
     );
+  }
+
+  Color _todoColor(SuperSandboxTodo todo) {
+    return todo.matched ? Colors.red : Colors.green;
   }
 }
