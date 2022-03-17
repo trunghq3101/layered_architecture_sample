@@ -15,8 +15,27 @@ const kTodoTitleList = [
   'Always forgive your enemies; nothing annoys them so much.'
 ];
 
+const kTodoTitleList2 = [
+  'Thai Nguyen',
+  'Quang Ninh',
+  'Hai Phong',
+  'Ha Noi',
+  'TP Ho Chi Minh',
+  'Binh Duong',
+  'Da Nang',
+  'Can Tho',
+  'Hue',
+  'Nghe An',
+];
+
 Todo todoCreator() {
   final r = Random();
   final todo = Todo(title: kTodoTitleList[r.nextInt(10)]);
+  return todo;
+}
+
+Todo todoCreator2() {
+  final r = Random();
+  final todo = Todo(title: kTodoTitleList2[r.nextInt(10)]);
   return todo;
 }

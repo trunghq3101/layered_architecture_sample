@@ -1,4 +1,5 @@
 import 'package:architecture_bloc_sample/business/sandbox_todo_bloc.dart';
+import 'package:architecture_bloc_sample/business/super_sandbox_todo_bloc.dart';
 import 'package:architecture_bloc_sample/business/todo_bloc.dart';
 import 'package:architecture_bloc_sample/business/user_mode_bloc.dart';
 import 'package:architecture_bloc_sample/data/todo_storage.dart';
@@ -31,8 +32,21 @@ void setupSandboxDeps() {
   );
   getIt.registerFactory(
     () => SandboxTodoBloc(
-      cachedTodoStorage: getIt.get(instanceName: kCached),
-      persistenceTodoStorage: getIt.get(instanceName: kFileSystem),
+      sandboxTodoStorage: getIt.get(instanceName: kCached),
+      normalTodoStorage: getIt.get(instanceName: kFileSystem),
+    ),
+  );
+}
+
+void setupSuperSandboxDeps() {
+  getIt.registerSingleton<TodoStorage>(
+    CachedTodoStorage(),
+    instanceName: kCached,
+  );
+  getIt.registerFactory(
+    () => SuperSandboxTodoBloc(
+      superSandboxTodoStorage: getIt.get(instanceName: kCached),
+      normalTodoStorage: getIt.get(instanceName: kFileSystem),
     ),
   );
 }

@@ -15,6 +15,9 @@ class UserModeBloc {
       case UserMode.sandbox:
         setupSandboxDeps();
         break;
+      case UserMode.superSandbox:
+        setupSuperSandboxDeps();
+        break;
       default:
     }
     _userModeStorage.currentUserMode = userMode;
